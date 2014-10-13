@@ -1,0 +1,11 @@
+﻿<section id="dashboard-view" class="mainbar" data-ng-controller="marvel as vm">
+    <section class="matter">
+
+        <div class="row" data-ng-repeat="character in vm.characters">
+            <div class="col-md-2"><img data-ng-src="{{character.thumbnail.path}}.{{character.thumbnail.extension}}" class="img-thumbnail" style="width:200px;" /></div>
+            <div class="col-md-3">
+                <h4>{{character.name}}</h4>
+            </div>
+            </div>
+    </section>
+</section>

@@ -9,7 +9,6 @@
     // Configure the routes and route resolvers
     app.config(['$routeProvider', 'routes', routeConfigurator]);
     function routeConfigurator($routeProvider, routes) {
-
         routes.forEach(function (r) {
             $routeProvider.when(r.url, r.config);
         });
@@ -23,7 +22,7 @@
                 url: '/',
                 config: {
                     title: 'marvel',
-                    templateUrl: '/app/marvel/marvel.html',
+                    templateUrl: './app/marvel/marvel.html',
                     settings: {
                         nav: 2,
                         content: '<i class="fa fa-lock"></i> Marvel'

@@ -1,14 +1,15 @@
 ﻿(function () {
     'use strict';
     var controllerId = 'marvel';
-    angular.module('app').controller(controllerId, ['common', 'datacontext', 'charactersService', marvel]);
+    angular.module('app').controller(controllerId, ['common', 'datacontext', 'charactersService', 'broadcaster', '$scope', marvel]);
 
-    function marvel(common, datacontext, charactersService) {
+    function marvel(common, datacontext, charactersService, broadcaster, $scope) {
         var getLogFn = common.logger.getLogFn;
         var log = getLogFn(controllerId);
 
         var vm = this;
         vm.characters = [];
+        var charactersUpdatedOff;
 
         activate();
 
@@ -20,11 +21,19 @@
 
         function getCharacters() {
             charactersService.getAll().success(function (result) {
-                console.log(result.data.results);
-                vm.characters = result.data.results;
+                charactersUpdatedOff = broadcaster.charactersUpdated(result.data.results);
                 return result.data;
             });
         }
+
+        broadcaster.oncharactersUpdated(function (event, characters) {
+            vm.characters = characters;
+        });
+
+        $scope.$on("$destroy", function () {
+            charactersUpdatedOff
+        });
+        
     };
 
 })();
@@ -37,6 +46,11 @@
     function charactersService($http, marvelCredentials) {
         this.getAll = function () {
             return $http.get('http://gateway.marvel.com:80/v1/public/characters?' + marvelCredentials.getKey());
+        }
+
+        this.search = function (searchterm) {
+            console.log('http://gateway.marvel.com:80/v1/public/characters?nameStartsWith=' + searchterm + '&' + marvelCredentials.getKey());
+            return $http.get('http://gateway.marvel.com:80/v1/public/characters?nameStartsWith=' + searchterm + '&' + marvelCredentials.getKey());
         }
     }
 })();

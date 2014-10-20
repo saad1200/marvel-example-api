@@ -3,12 +3,14 @@
     
     var controllerId = 'sidebar';
     angular.module('app').controller(controllerId,
-        ['$route', 'config', 'routes', sidebar]);
+        ['$route', 'config', 'routes', 'charactersService', 'broadcaster', '$scope', sidebar]);
 
-    function sidebar($route, config, routes) {
+    function sidebar($route, config, routes, charactersService, broadcaster, $scope) {
         var vm = this;
-
+        vm.searchTerm = '';
         vm.isCurrent = isCurrent;
+
+        var charactersUpdatedOff
 
         activate();
 
@@ -29,5 +31,23 @@
             var menuName = route.config.title;
             return $route.current.title.substr(0, menuName.length) === menuName ? 'current' : '';
         }
+
+        vm.search = function () {
+            if (vm.searchTerm.length > 3) {
+                charactersService.search(vm.searchTerm).success(function (result) {
+                    charactersUpdatedOff = broadcaster.charactersUpdated(result.data.results);
+                });
+            }
+            if (vm.searchTerm.length == 0) {
+                charactersService.getAll().success(function (result) {
+                    charactersUpdatedOff = broadcaster.charactersUpdated(result.data.results);
+                    return result.data;
+                });
+            }
+        }
+
+        $scope.$on("$destroy", function () {
+            charactersUpdatedOff
+        });
     };
 })();

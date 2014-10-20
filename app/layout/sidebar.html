@@ -2,7 +2,8 @@
     <div class="sidebar-filler"></div>
     <div class="sidebar-dropdown"><a href="#">Menu</a></div>
     <div class="sidebar-inner">
-        <div class="sidebar-widget">
+        <div class="sidebar-widget container">
+            <input type="text" class="col-md-12" style="color:black; margin-bottom:10px;" data-ng-model="vm.searchTerm" data-ng-keyup="vm.search()"/>
         </div>
         <ul class="navi">
             <li class="nlightblue fade-selection-animation" data-ng-class="vm.isCurrent(r)"

@@ -22,7 +22,7 @@
                 url: '/',
                 config: {
                     title: 'marvel',
-                    templateUrl: 'app/marvel/marvel.html',
+                    templateUrl: './app/marvel/marvel.html',
                     settings: {
                         nav: 2,
                         content: '<i class="fa fa-lock"></i> Marvel'
